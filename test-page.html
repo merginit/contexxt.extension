@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Inspector Test Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            gap: 40px;
+        }
+        h1 {
+            color: #ffffff;
+            border-bottom: 2px solid #f5d700;
+            padding-bottom: 10px;
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1040px; /* Exact width of 2 cards (500+500) + gap (40) */
+            width: 100%;
+        }
+        .card {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box; /* Ensure padding doesn't add to width */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .card h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #a1a1aa;
+        }
+        img, video {
+            max-width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .info-box {
+            background: #2a2a2a;
+            border-left: 4px solid #f5d700;
+            padding: 15px;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            line-height: 1.6;
+            order: 99; /* Force to bottom if inside flex container */
+        }
+        .highlight {
+            color: #f5d700;
+            font-weight: bold;
+        }
+        code {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Asset Inspector Validation</h1>
+    <p>Right-click elements below to test the extension.</p>
+
+    <div class="container">
+        <!-- Image Test -->
+        <div class="card">
+            <h2>Test Image</h2>
+            <img src="./example-image.jpg" alt="A sample test image for verification" title="Right-click to Inspect">
+            <p style="font-size: 0.9rem; color: #888;">Dimensions: Auto | Type: JPG</p>
+        </div>
+
+        <!-- Video Test -->
+        <div class="card">
+            <h2>Test Video</h2>
+            <video controls src="./example-video.mp4" title="Right-click to Inspect"></video>
+            <p style="font-size: 0.9rem; color: #888;">Type: MP4</p>
+        </div>
+
+        <!-- HTML Element Test -->
+        <div class="info-box">
+            <h3><span class="highlight">HTML Inspector Test</span></h3>
+            <p>
+                You can also right-click on <strong>text elements</strong> like this paragraph. 
+                The inspector should detect the <code>font-family</code>, <code>color</code>, and <code>font-size</code>.
+            </p>
+            <p>
+                Try inspecting this <span style="color: #ff6b6b; font-weight: bold;">colored text</span> 
+                or this <a href="#" style="color: #4ecdc4;">dummy link</a> to verify the color dot implementation.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

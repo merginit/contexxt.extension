@@ -15,7 +15,9 @@
     "postinstall": "wxt prepare"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.88",
     "typescript": "^5.9.3",
+    "unplugin-icons": "^23.0.1",
     "wxt": "^0.20.6"
   }
 }
