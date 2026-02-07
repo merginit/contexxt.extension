@@ -1,0 +1,25 @@
+Contexxt - Web Asset & Style Viewer
+
+Inspect, measure, and download images and videos. View fonts and colors instantly.
+
+The ultimate tool to inspect web assets (images, videos) and element styles (fonts, colors) with a single click.
+
+Key Features:
+
+Image & Video Inspector
+● See natural vs. displayed dimensions immediately.
+● View file sources, names, and formats.
+● Check file sizes (Content-Length) without downloading.
+● See video duration and resolution.
+
+Style Inspector
+● Identify fonts (Family, Weight, Size).
+● Copy color codes (Hex & RGB).
+● View CSS class names.
+
+Workflow Tools
+● One-Click Download: Save any image or video directly.
+● Quick Open: Ctrl + Click (configurable) to open assets in a new tab.
+● Smart Context Menu: Right-click any element and choose "Inspect Asset".
+
+Privacy First: Contexxt runs entirely locally. It uses standard browser APIs to analyze the page content only when you trigger it. No data is collected or sent to external servers.

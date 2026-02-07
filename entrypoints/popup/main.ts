@@ -5,7 +5,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 
 app.innerHTML = `
   <div class="settings-panel">
-    <h1>Asset Inspector Settings</h1>
+    <h1>Contexxt Settings</h1>
     
     <div class="card">
       <h2>Display Options</h2>

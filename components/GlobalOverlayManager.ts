@@ -55,7 +55,7 @@ export class GlobalOverlayManager {
         const assets = document.querySelectorAll('img, video');
         assets.forEach((el) => {
             if (!this.overlays.has(el as HTMLElement)) {
-                if (el.closest('.asset-inspector-global-overlay')) return;
+                if (el.closest('.contexxt-global-overlay')) return;
                 this.createOverlay(el as HTMLElement);
             }
         });
@@ -97,7 +97,7 @@ export class GlobalOverlayManager {
     private createOverlay(element: HTMLElement) {
         // Create Overlay Container
         const container = document.createElement('div');
-        container.className = 'asset-inspector-global-overlay';
+        container.className = 'contexxt-global-overlay';
 
         // Shadow DOM for isolation
         const shadow = container.attachShadow({ mode: 'open' });
@@ -123,7 +123,7 @@ export class GlobalOverlayManager {
         };
 
         const handleLeave = (e: MouseEvent) => {
-            if (e.relatedTarget === container || (e.relatedTarget as Element)?.closest?.('.asset-inspector-global-overlay') === container) {
+            if (e.relatedTarget === container || (e.relatedTarget as Element)?.closest?.('.contexxt-global-overlay') === container) {
                 return;
             }
             wrapper.classList.remove('active');
@@ -166,9 +166,7 @@ export class GlobalOverlayManager {
             wrapper.classList.remove('video-mode');
         }
 
-        // 1. Top Right Icon (Open in New Tab) - Controlled by URL Visibility (per user request)
-        // "URL Visibility was intended to show a icon button..."
-        // So if showUrl != never, we show the icon.
+        // 1. Top Right Icon (Open in New Tab) - Controlled by URL Visibility
         const showIcon = this.settings.showUrl !== 'never';
         const iconBtn = document.createElement('button');
         if (showIcon) {
@@ -182,7 +180,6 @@ export class GlobalOverlayManager {
         }
 
         // 2. Bauchbinde (Bottom Bar) - Controlled by URL setting logic
-        // User said "the other one as bauchbinde". Assuming "URL Visibility" controls both.
         const bottomBar = document.createElement('div');
         // If Always: Visible. If Hover: Visible on .active.
         const urlClass = this.getVisibilityClass(this.settings.showUrl);

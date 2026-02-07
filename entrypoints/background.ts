@@ -4,7 +4,7 @@ export default defineBackground(() => {
   browser.contextMenus.removeAll().then(() => {
     browser.contextMenus.create({
       id: 'inspect-asset',
-      title: 'Inspect Asset / Element',
+      title: 'Inspect with Contexxt',
       contexts: ['all'],
     });
     console.log('Context menu created');
