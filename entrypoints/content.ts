@@ -31,7 +31,7 @@ export default defineContentScript({
         document.addEventListener('click', (e) => {
             if ((e.ctrlKey || e.metaKey) && enableCtrlClick) {
                 const target = e.target as HTMLElement;
-                if (target.closest('#asset-inspector-host')) return;
+                if (target.closest('#contexxt-host')) return;
 
                 const tagName = target.tagName.toLowerCase();
                 let url = '';

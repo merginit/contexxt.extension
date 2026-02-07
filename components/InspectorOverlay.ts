@@ -16,7 +16,7 @@ export class InspectorOverlay {
 
   constructor() {
     this.host = document.createElement('div');
-    this.host.id = 'asset-inspector-host';
+    this.host.id = 'contexxt-host';
     this.host.style.all = 'initial';
     this.host.style.position = 'fixed';
     this.host.style.zIndex = '2147483647';
@@ -206,7 +206,7 @@ export class InspectorOverlay {
 
     return `
       <div class="header">
-         <div class="title">Asset Inspector</div>
+         <div class="title">Contexxt</div>
          <div class="type-badge">${type}</div>
       </div>
       <div class="content">
