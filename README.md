@@ -11,6 +11,14 @@
     </span>
 </div>
 
+<!-- <br />
+
+<div align="center">
+  <img src="./assets/preview.png" alt="Preview" />
+</div>
+
+<br /> -->
+
 ## Why Contexxt?
 
 Modern web development requires constant inspection of assets and styles. Contexxt simplifies this process by providing a powerful, overlay-based tool to inspect images, videos, and element styles directly on the page without digging through the developer tools.
