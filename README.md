@@ -11,13 +11,13 @@
     </span>
 </div>
 
-<!-- <br />
+<br />
 
 <div align="center">
   <img src="./assets/preview.png" alt="Preview" />
 </div>
 
-<br /> -->
+<br />
 
 ## Why Contexxt?
 
