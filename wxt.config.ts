@@ -1,5 +1,7 @@
 import { defineConfig } from 'wxt';
 import Icons from 'unplugin-icons/vite';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -21,4 +23,7 @@ export default defineConfig({
       }),
     ],
   }),
+  runner: {
+    startUrls: [pathToFileURL(path.resolve('test-page.html')).href],
+  },
 });
