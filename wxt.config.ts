@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifest: {
+    name: 'Contexxt',
     permissions: ['contextMenus', 'storage', 'activeTab', 'scripting', 'downloads'],
     icons: {
       16: 'icon/16.png',
