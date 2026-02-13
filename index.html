@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTEXXT — INSPECT. EXTRACT. UNDERSTAND.</title>
+    <style>
+        @font-face {
+            font-family: 'Chakra Petch';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('./fonts/chakra-petch-v11-latin-regular.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Chakra Petch';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url('./fonts/chakra-petch-v11-latin-500.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Chakra Petch';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url('./fonts/chakra-petch-v11-latin-600.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Chakra Petch';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('./fonts/chakra-petch-v11-latin-700.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'DM Mono';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('./fonts/dm-mono-v14-latin-regular.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'DM Mono';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url('./fonts/dm-mono-v14-latin-500.ttf') format('truetype');
+        }
+
+        :root {
+            --bg: #050505;
+            --bg-elevated: #0a0a0a;
+            --surface: #111111;
+            --text: #e8e8e8;
+            --text-muted: #666666;
+            --accent: #FFE600;
+            --accent-dim: rgba(255, 230, 0, 0.1);
+            --grid: #1a1a1a;
+            --danger: #ff3333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        body {
+            font-family: 'DM Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        section[id] {
+            scroll-margin-top: 100px;
+        }
+
+        /* Technical Grid Background */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 4px);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* Navigation - Raw Industrial */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0;
+            background: var(--bg);
+            border-bottom: 2px solid var(--accent);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-right: 2px solid var(--accent);
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--accent);
+            margin-right: 1rem;
+        }
+
+        .logo-text {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            border-left: 1px solid var(--grid);
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 1.5rem 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '>';
+            position: absolute;
+            left: 0.5rem;
+            opacity: 0;
+            transition: all 0.2s;
+            color: var(--accent);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding-left: 2.5rem;
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+            left: 1rem;
+        }
+
+        .nav-cta {
+            padding: 1.5rem 3rem;
+            background: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-cta:hover {
+            background: var(--text);
+        }
+
+        /* Hero - Broken Grid Layout */
+        .hero {
+            min-height: 100vh;
+            padding: 120px 0 0 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        .hero-left {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--accent);
+            max-width: 100px;
+        }
+
+        .hero h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--accent);
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 400px;
+            margin-bottom: 3rem;
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 3rem;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-meta span::before {
+            content: '//';
+            color: var(--accent);
+        }
+
+        .hero-right {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+        }
+
+        .terminal-window {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            border: 1px solid var(--grid);
+            position: relative;
+        }
+
+        .terminal-header {
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--grid);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--text-muted);
+        }
+
+        .terminal-dot:first-child {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .terminal-title {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .terminal-body {
+            padding: 2rem;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+        }
+
+        .terminal-cmd {
+            color: var(--text);
+        }
+
+        .terminal-output {
+            color: var(--text-muted);
+            margin-left: 1.5rem;
+        }
+
+        .terminal-highlight {
+            background: var(--accent-dim);
+            padding: 0 4px;
+            color: var(--accent);
+        }
+
+        .inspector-sim {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            padding: 1.5rem;
+            min-width: 280px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+
+        .inspector-header {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 11px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .inspector-close {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--grid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .inspector-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--grid);
+            font-size: 12px;
+        }
+
+        .inspector-row:last-child {
+            border-bottom: none;
+        }
+
+        .inspector-key {
+            color: var(--text-muted);
+        }
+
+        .inspector-val {
+            color: var(--text);
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        /* Section Markers */
+        .section-marker {
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: rotate(-90deg) translateX(-50%);
+            transform-origin: left center;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .section-marker::before {
+            content: '━━';
+            margin-right: 1rem;
+            color: var(--accent);
+        }
+
+        /* Features - Asymmetric Grid */
+        .features {
+            padding: 0;
+            border-top: 1px solid var(--grid);
+            position: relative;
+        }
+
+        .features-header {
+            padding: 4rem;
+            border-bottom: 1px solid var(--grid);
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 4rem;
+        }
+
+        .features-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+        }
+
+        .features-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            max-width: 800px;
+            line-height: 1.1;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .feature-card {
+            padding: 3rem;
+            border-right: 1px solid var(--grid);
+            border-bottom: 1px solid var(--grid);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:nth-child(3n) {
+            border-right: none;
+        }
+
+        .feature-card:hover {
+            background: var(--accent-dim);
+        }
+
+        .feature-card:hover .feature-num {
+            color: var(--accent);
+        }
+
+        .feature-num {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--grid);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .feature-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .feature-meta {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--grid);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        /* Usage Section */
+        .usage {
+            padding: 6rem 4rem;
+            border-top: 1px solid var(--grid);
+            background: var(--bg-elevated);
+            position: relative;
+        }
+
+        .usage-header {
+            margin-bottom: 4rem;
+        }
+
+        .usage-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .usage-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+        }
+
+        .usage-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid var(--grid);
+            align-items: stretch;
+        }
+
+        .usage-step {
+            padding: 3rem;
+            border-right: 1px solid var(--grid);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .usage-step:last-child {
+            border-right: none;
+        }
+
+        .step-indicator {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+
+        .usage-step:hover .step-indicator {
+            opacity: 1;
+        }
+
+        .step-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .step-cmd {
+            margin-top: auto;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--grid);
+            font-size: 12px;
+            color: var(--accent);
+            font-family: 'DM Mono', monospace;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 4rem;
+            border-top: 2px solid var(--accent);
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .cta-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .cta-title span {
+            color: var(--accent);
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1.25rem 2.5rem;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--grid);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .cta-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--grid);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-left {
+                border-right: none;
+                border-bottom: 1px solid var(--grid);
+                padding: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card {
+                border-right: none;
+            }
+
+            .usage-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .usage-step {
+                border-right: none;
+                border-bottom: 1px solid var(--grid);
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-header {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .blink {
+            animation: blink 2s infinite;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--accent);
+            margin-left: 4px;
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="#" class="nav-brand">
+            <div class="logo-mark">◈</div>
+            <span class="logo-text">CONTEXXT</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="https://github.com/merginit/contexxt.extension" target="_blank">Source</a></li>
+        </ul>
+        <a href="https://github.com/merginit/contexxt.extension" class="nav-cta" target="_blank">
+            [ INSTALL ]
+        </a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left">
+            <div class="hero-label">Chrome Extension // v0.1.0</div>
+            <h1>
+                INSPECT
+                <span>EXTRACT</span>
+                UNDERSTAND
+            </h1>
+            <p class="hero-desc">
+                Get instant context on any media or HTML element. No more digging through developer tools—just
+                right-click and see everything.
+            </p>
+            <div class="hero-meta">
+                <span>Free</span>
+                <span>Open Source</span>
+                <span>GPL-3.0</span>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <span class="terminal-title">contexxt://inspector</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-cmd"> inspect element</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">></span>
+                        <span class="terminal-cmd"> scanning DOM... <span class="blink">DONE</span></span>
+                    </div>
+                    <div class="terminal-line terminal-output">
+                        Found: <span class="terminal-highlight">hero-image.jpg</span>
+                    </div>
+                    <div class="terminal-line terminal-output">
+                        Type: image/jpeg
+                    </div>
+                    <div class="terminal-line terminal-output">
+                        Size: 1920×1080 (245KB)
+                    </div>
+                    <div class="terminal-line">
+                        <span class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="inspector-sim">
+                <div class="inspector-header">
+                    ◈ CONTEXXT
+                    <div class="inspector-close">×</div>
+                </div>
+                <div class="inspector-row">
+                    <span class="inspector-key">MIME</span>
+                    <span class="inspector-val">image/jpeg</span>
+                </div>
+                <div class="inspector-row">
+                    <span class="inspector-key">DIMS</span>
+                    <span class="inspector-val">1920×1080</span>
+                </div>
+                <div class="inspector-row">
+                    <span class="inspector-key">SIZE</span>
+                    <span class="inspector-val">245 KB</span>
+                </div>
+                <div class="inspector-row">
+                    <span class="inspector-key">SRC</span>
+                    <span class="inspector-val">asset.jpg</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="features-header">
+            <div class="features-label">// Capabilities</div>
+            <h2 class="features-title">
+                EVERYTHING YOU NEED TO KNOW ABOUT ANY ELEMENT
+            </h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-num">01</div>
+                <h3 class="feature-title">Multimedia</h3>
+                <p class="feature-desc">
+                    Instant metadata for images and videos. Source URL, dimensions, file size, MIME type, video
+                    duration—all without leaving the page.
+                </p>
+                <div class="feature-meta">JPEG PNG MP4 WEBM</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">02</div>
+                <h3 class="feature-title">Typography</h3>
+                <p class="feature-desc">
+                    Inspect any text element. Font family, weight, size in pixels, computed color values in RGB and Hex.
+                    CSS classes exposed.
+                </p>
+                <div class="feature-meta">FONTS COLORS CLASSES</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">03</div>
+                <h3 class="feature-title">Quick Actions</h3>
+                <p class="feature-desc">
+                    Download assets directly. Open in new tab. Ctrl+Click shortcut for instant access. Copy values to
+                    clipboard.
+                </p>
+                <div class="feature-meta">DL OPEN COPY</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">04</div>
+                <h3 class="feature-title">Smart Overlay</h3>
+                <p class="feature-desc">
+                    Context-aware positioning follows your cursor. Non-intrusive design respects the page layout.
+                    Auto-adjusts to viewport edges.
+                </p>
+                <div class="feature-meta">POSITION AUTO</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">05</div>
+                <h3 class="feature-title">Integration</h3>
+                <p class="feature-desc">
+                    Native context menu entry. Configurable keyboard shortcuts. Toggle overlay preferences. Minimal
+                    permissions required.
+                </p>
+                <div class="feature-meta">MENU KEYS SETTINGS</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">06</div>
+                <h3 class="feature-title">Privacy</h3>
+                <p class="feature-desc">
+                    Zero remote analytics. No tracking. Local processing only. Open source GPL-3.0 license. Your data
+                    never leaves your machine.
+                </p>
+                <div class="feature-meta">LOCAL SAFE OSS</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="usage" id="usage">
+        <div class="usage-header">
+            <div class="usage-label">// Protocol</div>
+            <h2 class="usage-title">THREE STEPS TO TOTAL CLARITY</h2>
+        </div>
+        <div class="usage-steps">
+            <div class="usage-step">
+                <div class="step-indicator">01</div>
+                <h3 class="step-title">Right Click</h3>
+                <p class="step-desc">
+                    Position your cursor over any image, video, or HTML element on any webpage.
+                </p>
+                <div class="step-cmd">$ contextmenu.activate()</div>
+            </div>
+            <div class="usage-step">
+                <div class="step-indicator">02</div>
+                <h3 class="step-title">Select Inspect</h3>
+                <p class="step-desc">
+                    Choose "Inspect Asset / Element" from the browser context menu.
+                </p>
+                <div class="step-cmd">$ inspector.launch()</div>
+            </div>
+            <div class="usage-step">
+                <div class="step-indicator">03</div>
+                <h3 class="step-title">Interact</h3>
+                <p class="step-desc">
+                    View metadata. Download. Open in tab. Press Ctrl/Cmd+Click for quick access.
+                </p>
+                <div class="step-cmd">$ asset.interact()</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-label">// Ready?</div>
+        <h2 class="cta-title">
+            ADD TO YOUR<br>
+            <span>TOOLKIT</span>
+        </h2>
+        <div class="cta-actions">
+            <a href="https://github.com/merginit/contexxt.extension" class="btn btn-primary" target="_blank">
+                [ DOWNLOAD FROM GITHUB ]
+            </a>
+            <a href="https://github.com/merginit/contexxt.extension" class="btn btn-secondary" target="_blank">
+                [ VIEW SOURCE ]
+            </a>
+        </div>
+        <div class="cta-note">
+            Free forever • Open Source • No tracking • GPL-3.0
+        </div>
+    </section>
+
+    <footer>
+        <div>© <span id="year">2026</span> <a href="https://merginit.com" target="_blank"
+                style="color: var(--text-muted); text-decoration: none;">MerginIT e.U.</a></div>
+        <ul class="footer-links">
+            <li><a href="https://github.com/merginit/contexxt.extension" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/merginit/contexxt.extension/issues" target="_blank">Issues</a></li>
+            <li><a href="https://github.com/merginit/contexxt.extension/blob/main/LICENSE.txt"
+                    target="_blank">License</a></li>
+        </ul>
+        <div>◈ CONTEXXT</div>
+    </footer>
+
+    <script>
+        // Subtle parallax on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.grid-overlay');
+            parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Terminal typing effect simulation
+        const terminalLines = document.querySelectorAll('.terminal-line');
+        terminalLines.forEach((line, index) => {
+            line.style.opacity = '0';
+            setTimeout(() => {
+                line.style.transition = 'opacity 0.3s';
+                line.style.opacity = '1';
+            }, index * 200);
+        });
+
+        // Dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>
